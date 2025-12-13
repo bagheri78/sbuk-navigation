@@ -1,12 +1,10 @@
-import Header from './components/Header';
 import MapComponent from './components/MapComponent';
 
 function App() {
   return (
-    <>
-      <Header />
+    <div className="h-screen w-full flex flex-col">
       <MapComponent />
-    </>
+    </div>
   );
 }
 

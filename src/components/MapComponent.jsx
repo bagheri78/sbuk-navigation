@@ -124,5 +124,54 @@ new LocationButton().addTo(mapInstance.current);
 
   }, []);
 
-  return <div id="map" style={{ width: '100%', height: '100vh' }} />;
+ return (
+  <div
+    style={{
+      position: "relative",
+      width: "100vw",
+      height: "100vh",
+    }}
+  >
+    {/* نوار جستجو */}
+    <div
+      style={{
+        position: "absolute",
+        top: "12px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 1000,
+        background: "white",
+        padding: "8px",
+        borderRadius: "8px",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.25)",
+        width: "90vw",
+        maxWidth: "320px",
+      }}
+    >
+      <input
+        type="text"
+        placeholder="جستجوی مکان در دانشگاه..."
+        style={{
+          width: "100%",
+          padding: "8px",
+          fontSize: "14px",
+          direction: "rtl",
+          borderRadius: "6px",
+          border: "1px solid #ccc",
+        }}
+      />
+    </div>
+
+    {/* نقشه */}
+    <div
+      id="map"
+      style={{
+        width: "100%",
+        height: "100%",
+      }}
+    />
+  </div>
+);
+
+
 }
