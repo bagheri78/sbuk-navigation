@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.0.0/dist/font-face.css');
+
+body {
+  margin: 0;
+  font-family: 'Vazir', sans-serif;
+  direction: rtl;
+}
+/* این خط رو به index.css اضافه کن */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
