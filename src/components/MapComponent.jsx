@@ -51,33 +51,52 @@ const LocationButton = L.Control.extend({
     btn.title = 'موقعیت فعلی من';
 
     btn.onclick = () => {
-      btn.innerHTML = 'در حال جستجو...';
+      if (!navigator.geolocation) {
+        alert("مرورگر شما موقعیت‌یابی را پشتیبانی نمی‌کند");
+        return;
+      }
+
+      btn.innerHTML = 'در حال یافتن...';
       btn.style.backgroundColor = '#FF6600';
 
-      // تست روی کامپیوتر (موقعیت فرضی داخل دانشگاه)
-      const testLat = 30.2920;
-      const testLng = 57.0650;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
 
-      mapInstance.current.setView([testLat, testLng], 18);
+          mapInstance.current.setView([lat, lng], 18);
 
-      if (userMarker.current) mapInstance.current.removeLayer(userMarker.current);
+          if (userMarker.current) {
+            mapInstance.current.removeLayer(userMarker.current);
+          }
 
-      userMarker.current = L.circleMarker([testLat, testLng], {
-        radius: 15,
-        fillColor: '#0066CC',
-        color: '#fff',
-        weight: 4,
-        fillOpacity: 1
-      })
-      .addTo(mapInstance.current)
-      .bindPopup('<div class="font-bold text-blue-900">شما اینجا هستید! (تست)</div>')
-      .openPopup();
+          userMarker.current = L.circleMarker([lat, lng], {
+            radius: 14,
+            fillColor: '#0066CC',
+            color: '#fff',
+            weight: 4,
+            fillOpacity: 1
+          })
+            .addTo(mapInstance.current)
+            .bindPopup('📍 موقعیت فعلی شما')
+            .openPopup();
 
-      setTimeout(() => {
-        btn.innerHTML = 'موقعیت‌یابی';
-        btn.style.backgroundColor = '#003366';
-      }, 1500);
+          btn.innerHTML = 'موقعیت‌یابی';
+          btn.style.backgroundColor = '#003366';
+        },
+        (error) => {
+          alert('امکان دریافت موقعیت وجود ندارد');
+          btn.innerHTML = 'موقعیت‌یابی';
+          btn.style.backgroundColor = '#003366';
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
     };
+
 
     return btn;
   }
