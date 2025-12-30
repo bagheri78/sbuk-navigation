@@ -1,0 +1,191 @@
+﻿/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Tahoma, sans-serif;
+    direction: rtl;
+    background: url("../images/bg.png") center / cover no-repeat;
+    min-height: 100vh;
+}
+
+/* ================= LAYOUT ================= */
+#colorlib-page {
+    min-height: 100vh;
+    display: flex;
+}
+
+#colorlib-aside {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 260px;
+    background: linear-gradient(180deg, #2e7d32 0%, #1b5e20 100%);
+    padding-top: 60px;
+    border-radius: 0 32px 32px 0;
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+}
+
+#colorlib-main {
+    margin-left: 260px;
+    flex: 1;
+    background: linear-gradient( rgba(244, 247, 246, 0.9), rgba(244, 247, 246, 0.9) ), url("../images/rout3.jpg") center / cover no-repeat;
+}
+
+.hero-wrap {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar-header {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 40px;
+}
+
+#colorlib-main-menu ul {
+    list-style: none;
+}
+
+#colorlib-main-menu li {
+    margin: 10px 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+    #colorlib-main-menu li:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateX(-6px);
+    }
+
+    #colorlib-main-menu li a {
+        display: block;
+        padding: 14px 20px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    #colorlib-main-menu li.logout-item {
+        margin-top: 30px;
+        background: none;
+    }
+
+/* ================= PROFILE CARD ================= */
+.profile-card {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 25px;
+    padding: 35px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.18);
+}
+
+/* ================= HEADER ================= */
+.profile-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1b5e20;
+    margin-top: 10px;
+}
+
+/* ================= AVATAR ================= */
+.avatar-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: auto;
+}
+
+    .avatar-wrapper img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 4px solid #2e7d32;
+        object-fit: cover;
+    }
+
+.avatar-plus {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    background: #2e7d32;
+    color: #fff;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* ================= FORM ================= */
+.form-control {
+    direction: rtl;
+    text-align: right;
+    border-radius: 12px;
+    border: 1px solid #cfd8dc;
+    padding: 12px 15px;
+    font-size: 14px;
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: #2e7d32;
+        box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.25);
+    }
+
+/* ================= BUTTON ================= */
+.btn-primary {
+    background-color: #2e7d32;
+    border: none;
+    border-radius: 25px;
+    padding: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #1b5e20;
+        transform: translateY(-2px);
+    }
+
+/* ================= PROFILE VIEW ================= */
+#profile-view {
+    text-align: right;
+}
+
+    #profile-view h2 {
+        color: #1b5e20;
+        margin-bottom: 15px;
+    }
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    #colorlib-aside {
+        width: 210px;
+    }
+
+    #colorlib-main {
+        margin-left: 210px;
+    }
+
+    .profile-card {
+        margin: 0 15px;
+    }
+}

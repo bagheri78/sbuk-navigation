@@ -4,6 +4,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import { useState } from "react";
 
 
 // درست کردن آیکون پیش‌فرض
@@ -24,7 +25,17 @@ const locations = [
   { lat: 30.25559, lng: 57.103495, name: "تالار وحدت", color: "#9B59B6" },
 ];
 
-import { useState } from "react";
+const locationSVG = `
+<svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+     stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="3"/>
+  <line x1="12" y1="2" x2="12" y2="6"/>
+  <line x1="12" y1="18" x2="12" y2="22"/>
+  <line x1="2" y1="12" x2="6" y2="12"/>
+  <line x1="18" y1="12" x2="22" y2="12"/>
+</svg>
+`;
+
 
 
 export default function MapComponent() {
@@ -33,9 +44,39 @@ export default function MapComponent() {
   const userMarker = useRef(null); 
   const routingControl = useRef(null);
   const markersRef = useRef({});
-  const [search, setSearch] = useState("");
+  const [routingMode, setRoutingMode] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [mode, setMode] = useState("normal"); 
+// normal | routing-start | routing-dest
+
+  const [startPoint, setStartPoint] = useState(null);
+  const [endPoint, setEndPoint] = useState(null);
+
+
 
   
+
+ const startRouting = (sLat, sLng, dLat, dLng) => {
+  if (routingControl.current) {
+    mapInstance.current.removeControl(routingControl.current);
+  }
+
+  routingControl.current = L.Routing.control({
+    waypoints: [
+      L.latLng(sLat, sLng),
+      L.latLng(dLat, dLng)
+    ],
+    routeWhileDragging: false,
+    addWaypoints: false,
+    draggableWaypoints: false,
+    show: false,
+    createMarker: () => null,
+    lineOptions: {
+      styles: [{ color: '#0066CC', weight: 6 }]
+    }
+  }).addTo(mapInstance.current);
+};
+
 
   useEffect(() => {
     // اگر قبلاً ساخته شده بود، دوباره نساز
@@ -69,6 +110,85 @@ export default function MapComponent() {
       attribution: '&copy; OpenStreetMap',
       maxZoom: 19,
     }).addTo(mapInstance.current);
+    const RoutingButton = L.Control.extend({
+  options: { position: 'bottomright' },
+
+  onAdd: function () {
+    const btn = L.DomUtil.create(
+      'div',
+      'leaflet-bar leaflet-control leaflet-control-custom'
+    );
+
+    btn.style.width = '48px';
+btn.style.height = '48px';
+btn.style.borderRadius = '50%'; // 👈 مهم‌ترین خط
+btn.style.backgroundColor = '#0066CC';
+btn.style.color = 'white';
+btn.style.display = 'flex';
+btn.style.alignItems = 'center';
+btn.style.justifyContent = 'center';
+btn.style.cursor = 'pointer';
+btn.style.fontSize = '22px';
+btn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.35)';
+btn.style.userSelect = 'none';
+
+
+    btn.innerHTML = '🧭';
+
+    L.DomEvent.disableClickPropagation(btn);
+
+    btn.onclick = () => {
+  setMode("routing-start");
+  setSearchText("");
+};
+
+
+    return btn;
+  }
+});
+
+
+
+new RoutingButton().addTo(mapInstance.current);
+const ProfileButton = L.Control.extend({
+  options: { position: 'bottomright' },
+
+  onAdd: function () {
+    const btn = L.DomUtil.create(
+      'div',
+      'leaflet-bar leaflet-control leaflet-control-custom'
+    );
+
+    btn.style.width = '48px';
+    btn.style.height = '48px';
+    btn.style.borderRadius = '50%';
+    btn.style.backgroundColor = '#444';
+    btn.style.color = 'white';
+    btn.style.display = 'flex';
+    btn.style.alignItems = 'center';
+    btn.style.justifyContent = 'center';
+    btn.style.cursor = 'pointer';
+    btn.style.fontSize = '22px';
+    btn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.35)';
+    btn.style.userSelect = 'none';
+    btn.style.marginTop = '8px'; // فاصله از دکمه بالایی
+
+    btn.innerHTML = '👤';
+
+    L.DomEvent.disableClickPropagation(btn);
+
+   btn.onclick = () => {
+  window.location.href = '/profilepage/profile.html';
+};
+
+
+
+    return btn;
+  }
+});
+new ProfileButton().addTo(mapInstance.current);
+
+
 
     // دکمه موقعیت‌یابی + تست روی کامپیوتر
   const LocationButton = L.Control.extend({
@@ -87,7 +207,7 @@ export default function MapComponent() {
     btn.style.cursor = 'pointer';
     btn.style.boxShadow = '0 4px 15px rgba(0,0,0,0.4)';
     btn.style.fontSize = '20px';
-    btn.innerHTML = 'موقعیت‌یابی';
+    btn.innerHTML = locationSVG;
     btn.title = 'موقعیت فعلی من';
 
     btn.onclick = () => {
@@ -121,7 +241,7 @@ export default function MapComponent() {
             .bindPopup('📍 موقعیت فعلی شما')
             .openPopup();
 
-          btn.innerHTML = 'موقعیت‌یابی';
+          btn.innerHTML = 'locationSVG';
           btn.style.backgroundColor = '#003366';
         },
         (error) => {
@@ -145,34 +265,6 @@ export default function MapComponent() {
 new LocationButton().addTo(mapInstance.current);
 
 
-    const startRouting = (destLat, destLng) => {
-  if (!userMarker.current) {
-    alert("اول موقعیت خودت رو مشخص کن");
-    return;
-  }
-
-  const start = userMarker.current.getLatLng();
-
-  // اگر مسیر قبلی هست پاکش کن
-  if (routingControl.current) {
-    mapInstance.current.removeControl(routingControl.current);
-  }
-
-  routingControl.current = L.Routing.control({
-    waypoints: [
-      L.latLng(start.lat, start.lng),
-      L.latLng(destLat, destLng)
-    ],
-    routeWhileDragging: false,
-    addWaypoints: false,
-    draggableWaypoints: false,
-    show: false,
-    lineOptions: {
-      styles: [{ color: '#0066CC', weight: 6 }]
-    },
-    createMarker: () => null, // مارکر اضافی نسازه
-  }).addTo(mapInstance.current);
-};
 
 
    locations.forEach(loc => {
@@ -227,9 +319,16 @@ new LocationButton().addTo(mapInstance.current);
     >
       <input
         type="text"
-        placeholder="جستجوی مکان در دانشگاه..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        placeholder={
+  mode === "routing-start"
+    ? "مبدا را انتخاب کنید"
+    : mode === "routing-dest"
+    ? "مقصد را انتخاب کنید"
+    : "جستجو..."
+}
+
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
         style={{
           width: "100%",
           padding: "8px",
@@ -239,35 +338,52 @@ new LocationButton().addTo(mapInstance.current);
           border: "1px solid #ccc",
         }}
       />
-      {search && (
-        <div style={{ marginTop: "6px" }}>
-          {locations
-            .filter(loc =>
-              loc.name.includes(search)
-            )
-            .map(loc => (
-              <div
-                key={loc.name}
-                style={{
-                  padding: "6px",
-                  cursor: "pointer",
-                  borderBottom: "1px solid #eee",
-                  fontSize: "14px"
-                }}
-                onClick={() => {
-                  const marker = markersRef.current[loc.name];
-                  if (!marker) return;
 
-                  mapInstance.current.setView([loc.lat, loc.lng], 18);
-                  marker.openPopup();
-                  setSearch("");
-                }}
-              >
-                📍 {loc.name}
-              </div>
-            ))}
+     {searchText && (
+  <div style={{ marginTop: "6px", maxHeight: "150px", overflowY: "auto" }}>
+    {locations
+      .filter(loc => loc.name.includes(searchText))
+      .map(loc => (
+        <div
+          key={loc.name}
+          style={{
+            padding: "6px",
+            cursor: "pointer",
+            borderBottom: "1px solid #eee"
+          }}
+          onClick={() => {
+            if (mode === "normal") {
+              mapInstance.current.setView([loc.lat, loc.lng], 18);
+              setSearchText(loc.name);
+            }
+
+            if (mode === "routing-start") {
+              setStartPoint(loc);
+              setMode("routing-dest");
+              setSearchText("");
+            }
+
+            if (mode === "routing-dest") {
+              setEndPoint(loc);
+              setMode("normal");
+              setSearchText(loc.name);
+              startRouting(
+                startPoint.lat,
+                startPoint.lng,
+                loc.lat,
+                loc.lng
+              );
+            }
+          }}
+        >
+          📍 {loc.name}
         </div>
-      )}
+      ))}
+  </div>
+)}
+
+
+
     </div>
 
     {/* نقشه */}

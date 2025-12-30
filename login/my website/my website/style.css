@@ -1,0 +1,402 @@
+﻿*, *:before, *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+}
+:root {
+    --green-main: #2e7d32; /* سبز اصلی */
+    --green-light: #a5d6a7 /* سبز خیلی روشن */
+    --white: #ffffff;
+    --gray-old: #bdbdbd; /* طوسی قبلی */
+}
+
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("images/university.png"); /* عکس دانشگاه */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Vazirmatn', sans-serif;
+}
+
+
+input, button {
+    border: none;
+    background: none;
+}
+
+.cont {
+    overflow: hidden;
+    position: relative;
+    width: 900px;
+    height: 550px;
+    background: transparent;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    backdrop-filter: blur(16px);
+    
+
+
+
+}
+
+.form {
+    position: relative;
+    width: 640px;
+    height: 600px;
+    padding: 40px 30px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 20px;
+    /*box-shadow: 0 8px 32px rgba(0,0,0,0.15);*/
+    transition: transform 1.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 100%;
+}
+
+
+h2 {
+    width: 100%;
+    font-size: 30px;
+    text-align: center;
+
+}
+label {
+    width: 260px;
+    margin-top: 18px;
+    text-align: right; /* متن فارسی */
+}
+
+
+    label span {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #333;
+    }
+
+input {
+    text-align: right;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 260px;
+    /* margin: 6px auto 0;*/
+    padding: 10px 14px 10px 10px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 10px;
+    font-size: 14px;
+    height: 42px;
+    
+    margin-top: 6px;
+    direction: rtl;
+   
+
+}
+    input:focus {
+        border-color: var(--green-main);
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+    }
+
+button {
+    display: block;
+    margin: 0 auto;
+    width: 260px;
+    height: 36px;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.submit {
+    margin-top: 40px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: 'Nunito', sans-serif;
+    transition: .5s;
+    background: var(--green-main);
+    color: var(--white);
+}
+
+    .submit:hover {
+        transition: .5s;
+        
+        background: #1b5e20;
+    }
+
+.forgot-pass {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0c0101;
+    cursor: pointer;
+}
+
+    .forgot-pass:hover {
+        color: red;
+    }
+
+.social-media {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+}
+
+    .social-media ul {
+        list-style: none;
+    }
+
+        .social-media ul li {
+            display: inline-block;
+            cursor: pointer;
+            margin: 25px 10px;
+        }
+
+    .social-media img {
+        width: 20px;
+        height: 20px;
+    }
+
+.sub-cont {
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    width: 900px;
+    height: 100%;
+    padding-left: 260px;
+    background: transparent;
+    -webkit-transition: -webkit-transform 1.2s ease-in-out;
+    transition: -webkit-transform 1.2s ease-in-out;
+    transition: transform 1.2s ease-in-out;
+}
+
+.cont.s-signup .sub-cont {
+    -webkit-transform: 
+    transform: translate3d(-640px, 0, 0);
+}
+
+.img {
+    overflow: hidden;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 260px;
+    height: 100%;
+    padding-top: 360px;
+    background: var(--green-main);
+}
+
+    /*.img:before {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 900px;
+        height: 100%;
+        background-image: url(images/university.png);
+        background-size: cover;
+        transition: -webkit-transform 1.2s ease-in-out;
+        transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
+    }*/
+
+    .img:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.3);
+    }
+
+.cont.s-signup .img:before {
+    -webkit-transform: translate3d(640px, 0, 0);
+    transform: translate3d(640px, 0, 0);
+}
+
+.img-text {
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    width: 100%;
+    padding: 0 20px;
+    text-align: center;
+    color: #fff;
+    -webkit-transition: -webkit-transform 1.2s ease-in-out;
+    transition: -webkit-transform 1.2s ease-in-out;
+    transition: transform 1.2s ease-in-out, -webkit-transform 1.2s ease-in-out;
+}
+
+    .img-text h2 {
+        margin-bottom: 10px;
+        font-weight: normal;
+    }
+
+    .img-text p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+.cont.s-signup .img-text.m-up {
+    -webkit-transform: translateX(520px);
+    transform: translateX(520px);
+}
+
+.img-text.m-in {
+    -webkit-transform: translateX(-520px);
+    transform: translateX(-520px);
+}
+
+.cont.s-signup .img-text.m-in {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+}
+
+
+.sign-in {
+    padding-top: 65px;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+
+.cont.s-signup .sign-in {
+    -webkit-transition-timing-function: ease-in-out;
+    transition-timing-function: ease-in-out;
+    -webkit-transition-duration: 1.2s;
+    transition-duration: 1.2s;
+    -webkit-transform: translate3d(640px, 0, 0);
+    transform: translate3d(640px, 0, 0);
+}
+
+.img-btn {
+    overflow: hidden;
+    z-index: 2;
+    position: relative;
+    width: 100px;
+    height: 36px;
+    margin: 0 auto;
+    background: transparent;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+    .img-btn:after {
+        content: '';
+        z-index: 2;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border: 2px solid #fff;
+        border-radius: 30px;
+    }
+
+    .img-btn span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: -webkit-transform 1.2s;
+        transition: -webkit-transform 1.2s;
+        transition: transform 1.2s;
+        transition: transform 1.2s, -webkit-transform 1.2s;
+        border: 2px solid var(--white);
+        color: var(--white);
+    }
+
+        .img-btn span.m-in {
+            -webkit-transform: translateY(-72px);
+            transform: translateY(-72px);
+        }
+
+.cont.s-signup .img-btn span.m-in {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.cont.s-signup .img-btn span.m-up {
+    -webkit-transform: translateY(72px);
+    transform: translateY(72px);
+}
+
+.sign-up {
+    -webkit-transform: translate3d(-900px, 0, 0);
+    transform: translate3d(-900px, 0, 0);
+    margin: 0 auto;
+}
+
+.cont.s-signup .sign-up {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("images/university.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Vazirmatn', sans-serif;
+    overflow: hidden;
+}
+
+
+    /* لایه بلور بک‌گراند */
+   
+.form .logo {
+    display: block;
+    margin: 0 auto 20px; /* وسط چین و فاصله از فرم */
+    width: 120px; /* اندازه لوگو */
+    height: auto; /* ارتفاع خودکار */
+}
+.form.sign-up label {
+    margin-top: 1px;
+}
+.form.sign-up {
+    padding-top: 30px; /* کمتر از sign-in */
+}
+    .form.sign-up .submit {
+        margin-top: 20px;
+    }
+
+
+
+
+
+

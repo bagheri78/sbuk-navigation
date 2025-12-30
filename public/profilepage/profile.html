@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+	<title>پروفایل کاربر</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+	<div id="colorlib-page">
+		<aside id="colorlib-aside" class="js-fullheight">
+			<div class="sidebar-header">
+				<h2 id="welcome-user">سلام !</h2>
+			</div>
+			<nav id="colorlib-main-menu">
+				<ul>
+					<li class="nav-item"><a href="map.html">نقشه دانشگاه</a></li>
+					<li class="nav-item"><a href="#">مکان‌های ذخیره‌شده</a></li>
+					<li class="nav-item"><a href="#">مسیرهای پر بازدید</a></li>
+					<li class="nav-item"><a href="#">علاقه‌مندی‌ها</a></li>
+					<li class="nav-item"><a href="#">تنظیمات حساب</a></li>
+					<li class="nav-item logout-item"><a href="login.html">خروج</a></li>
+				</ul>
+			</nav>
+		</aside>
+
+		<div id="colorlib-main">
+			<div class="hero-wrap js-fullheight d-flex justify-content-center align-items-center">
+
+				<div class="col-md-6  profile-card">
+
+					<!-- HEADER -->
+					<div class="profile-header">
+						<div class="avatar-wrapper">
+							<img id="profile-img" src="images/profile.jpg" alt="avatar">
+							<div class="avatar-plus"
+								 onclick="document.getElementById('upload-img').click()">+</div>
+							<input type="file" id="upload-img" accept="image/*" hidden>
+						</div>
+						<h2 class="profile-title">تکمیل پروفایل</h2>
+					</div>
+
+					<!-- FORM -->
+					<form id="profile-form">
+
+						<input type="text" class="form-control mb-2" id="name"
+							   placeholder="نام و نام خانوادگی" required>
+
+						<input type="text" class="form-control mb-2" id="faculty"
+							   placeholder="دانشکده" required>
+
+						<input type="text" class="form-control mb-2" id="major"
+							   placeholder="رشته تحصیلی" required>
+
+						<input type="text" class="form-control mb-2" id="studentId"
+							   placeholder="شماره دانشجویی" required>
+
+						<input type="number" class="form-control mb-3" id="term"
+							   placeholder="ترم" required>
+
+						<button type="submit" class="btn btn-primary w-100">
+							ثبت اطلاعات
+						</button>
+					</form>
+
+					<!-- VIEW -->
+					<div id="profile-view" style="display:none;">
+						<h2 class="subheading">پروفایل کاربری</h2>
+						<h1 id="v-name"></h1>
+						<p id="v-faculty"></p>
+						<p id="v-major"></p>
+						<p id="v-studentId"></p>
+						<p id="v-term"></p>
+
+						<button class="btn btn-outline-secondary mt-3" onclick="editProfile()">
+							ویرایش اطلاعات
+						</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- JS -->
+	<script>
+		const form = document.getElementById("profile-form");
+		const profileView = document.getElementById("profile-view");
+		const welcome = document.getElementById("welcome-user");
+
+		const inputs = {
+			name: document.getElementById("name"),
+			faculty: document.getElementById("faculty"),
+			major: document.getElementById("major"),
+			studentId: document.getElementById("studentId"),
+			term: document.getElementById("term"),
+		};
+
+		function showProfile(data) {
+			document.getElementById("v-name").innerText = data.name;
+			document.getElementById("v-faculty").innerText = "دانشکده: " + data.faculty;
+			document.getElementById("v-major").innerText = "رشته: " + data.major;
+			document.getElementById("v-studentId").innerText = "شماره دانشجویی: " + data.studentId;
+			document.getElementById("v-term").innerText = "ترم: " + data.term;
+
+			welcome.innerText = "سلام " + data.name + " !";
+
+			form.style.display = "none";
+			profileView.style.display = "block";
+		}
+
+		form.addEventListener("submit", function (e) {
+			e.preventDefault();
+
+			const user = {
+				name: inputs.name.value,
+				faculty: inputs.faculty.value,
+				major: inputs.major.value,
+				studentId: inputs.studentId.value,
+				term: inputs.term.value,
+			};
+
+			localStorage.setItem("profile", JSON.stringify(user));
+			showProfile(user);
+		});
+
+		const savedProfile = localStorage.getItem("profile");
+		if (savedProfile) {
+			showProfile(JSON.parse(savedProfile));
+		}
+
+		function editProfile() {
+			localStorage.removeItem("profile");
+			location.reload();
+		}
+
+		// Avatar upload
+		const uploadImg = document.getElementById("upload-img");
+		const profileImg = document.getElementById("profile-img");
+
+		const savedImage = localStorage.getItem("profileImage");
+		if (savedImage) profileImg.src = savedImage;
+
+		uploadImg.addEventListener("change", function () {
+			const file = this.files[0];
+			if (!file || !file.type.startsWith("image/")) return;
+
+			const reader = new FileReader();
+			reader.onload = e => {
+				profileImg.src = e.target.result;
+				localStorage.setItem("profileImage", e.target.result);
+			};
+			reader.readAsDataURL(file);
+		});
+	</script>
+
+</body>
+</html>
